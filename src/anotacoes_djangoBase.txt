@@ -35,7 +35,7 @@ pip install django
 pip install django-session-timeout
 pip install python-dotenv
 pip install django-requestlogs
-
+pip install django-widget-tweaks
 =Django===============================================================
 django-admin startproject core .
 python manage.py runserver
@@ -65,3 +65,7 @@ Modificando User para login com email e senha
 https://www.youtube.com/watch?v=8Hg9ALsxz4c&ab_channel=RegisdoPython
 https://simpleisbetterthancomplex.com/tutorial/2016/07/22/how-to-extend-django-user-model.html
 https://github.com/rg3915/django-boilerplate/blob/main/core/models.py
+
+
+
+https://github.com/rg3915/dicas-de-django/tree/main/backend/accounts

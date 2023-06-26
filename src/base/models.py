@@ -5,41 +5,6 @@ from django.dispatch import receiver
 
 #from localflavor.br.br_states import STATE_CHOICES
 
-class Profile(models.Model):
-    user = models.OneToOneField(
-        User,
-        on_delete=models.PROTECT,
-        verbose_name='usuário'
-    )
-    
-    birthday = models.DateField('data de nascimento', null=True, blank=True)
-    
-    rg = models.CharField(max_length=10, null=True, blank=True)
-    cpf = models.CharField(max_length=11, null=True, blank=True)
-    #avatar = models.ImageField(upload_to="customers/profiles/avatars/", null=True, blank=True)
-
-    class Meta:
-        ordering = ('user__first_name',)
-        verbose_name = 'perfil'
-        verbose_name_plural = 'perfis'
-
-    @property
-    def full_name(self):
-        return f'{self.user.first_name} {self.user.last_name or ""}'.strip()
-
-    def __str__(self):
-        return self.full_name
-
-
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
 
 
 # class UuidModel(models.Model):

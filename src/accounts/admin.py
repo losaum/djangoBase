@@ -6,7 +6,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
-from .models import User
+from .models import User, Profile
 
 
 class UserAdmin(BaseUserAdmin):
@@ -43,3 +43,20 @@ class UserAdmin(BaseUserAdmin):
 
 
 admin.site.register(User, UserAdmin)
+
+
+
+
+
+
+@admin.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ('__str__', 'birthday', 'rg', 'cpf')
+    search_fields = (
+        'user__first_name',
+        'user__last_name',
+        'user__email',
+        'birthday',
+        'rg',
+        'cpf'
+    )

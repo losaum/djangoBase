@@ -2,11 +2,16 @@ from __future__ import unicode_literals
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
+from django.contrib.auth.signals import user_logged_in, user_logged_out
 from django.core.mail import send_mail
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
 
 from .managers import UserManager
+from .signals import user_login_password_failed
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -68,3 +73,57 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+    def get_absolute_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.pk})
+
+@receiver(post_save, sender=User)
+def send_email_on_user_creation(sender, instance, created, **kwargs):
+    if created:
+        send_mail(
+            'Novo usuário criado',
+            f'Um novo usuário com email {instance.email} foi criado.',
+            'from@example.com',
+            ['to@example.com'],
+            fail_silently=False,
+        )
+
+
+#######################
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.PROTECT,
+        verbose_name='usuário'
+    )
+    
+    birthday = models.DateField('data de nascimento', null=True, blank=True)
+    
+    rg = models.CharField(max_length=10, null=True, blank=True)
+    cpf = models.CharField(max_length=11, null=True, blank=True)
+    #avatar = models.ImageField(upload_to="customers/profiles/avatars/", null=True, blank=True)
+
+    class Meta:
+        ordering = ('user__first_name',)
+        verbose_name = 'perfil'
+        verbose_name_plural = 'perfis'
+
+    @property
+    def full_name(self):
+        return f'{self.user.first_name} {self.user.last_name or ""}'.strip()
+
+    def __str__(self):
+        return self.full_name
+
+
+@receiver(post_save, sender=User)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
+def save_user_profile(sender, instance, **kwargs):
+    instance.profile.save()

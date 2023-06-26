@@ -30,13 +30,14 @@ AUTH_USER_MODEL = 'accounts.User'
 
 INSTALLED_APPS = [
     "accounts",  # <<< 
+    "base",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "base",
+    
 ]
 
 MIDDLEWARE = [
@@ -184,3 +185,5 @@ MESSAGE_TAGS = {
 	constants.SUCCESS: 'alert-success',
 	constants.INFO: 'alert-info',
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
