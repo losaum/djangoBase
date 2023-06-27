@@ -63,6 +63,8 @@ class CustomUserForm(forms.ModelForm):
             code='invalid_first_character'
         )
 
+       
+
 
 class MyAuthenticationForm(AuthenticationForm):
 
@@ -113,7 +115,7 @@ class MyAuthenticationForm(AuthenticationForm):
         except User.DoesNotExist:
             raise self.get_invalid_login_error()
         else:
-            self.check_max_attempts(user)
+            #self.check_max_attempts(user)
             raise self.get_invalid_password_error()
 
     # def check_max_attempts(self, user):
@@ -158,3 +160,9 @@ class MyAuthenticationForm(AuthenticationForm):
             code='max_attempt',
             params={'username': self.username_field.verbose_name},
         )
+
+    ## testando add formcontrol
+    def __init__(self, *args, **kwargs): # Adiciona 
+        super().__init__(*args, **kwargs)  
+        for field_name, field in self.fields.items():   
+              field.widget.attrs['class'] = 'form-control'     

@@ -19,6 +19,7 @@ from .services import send_mail_to_user_reset_password
 
 
 def signup(request):
+    #https://dev.to/thepylot/create-advanced-user-sign-up-view-in-django-step-by-step-k9m
     '''
     Cadastra Usuário.
     '''
@@ -116,20 +117,21 @@ class MyLoginView(LoginView):
             try:
                 user = User.objects.get(email=email)
 
-                for error in form.errors.as_data()['__all__']:
-                    if error.code == 'max_attempt':
-                        # Envia email para o usuário resetar a senha.
-                        send_mail_to_user_reset_password(self.request, user)
+                # for error in form.errors.as_data()['__all__']:
+                #     if error.code == 'max_attempt':
+                #         # Envia email para o usuário resetar a senha.
+                #         send_mail_to_user_reset_password(self.request, user)
 
             except User.DoesNotExist:
                 pass
             else:
                 # Dispara o signal quando o usuário existe, mas a senha está errada.
-                user_login_password_failed.send(
-                    sender=__name__,
-                    request=self.request,
-                    user=user
-                )
+                # user_login_password_failed.send(
+                #     sender=__name__,
+                #     request=self.request,
+                #     user=user
+                # )
+                pass
 
         return self.render_to_response(self.get_context_data(form=form))
 
