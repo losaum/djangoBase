@@ -28,13 +28,13 @@
     </form>
     </div>
    
-    <h1>Login</h1>
+    {% comment %} <h1>Login</h1>
     <div class="container">
     <form action="." method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Login">
-    </form>
+    </form> {% endcomment %}
 </div>
 
 {% endblock content %}

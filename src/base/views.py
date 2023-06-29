@@ -16,3 +16,14 @@ def index(request):
 def dashboard(request):
     template_name = 'dashboard.html'
     return render(request, template_name)
+
+
+@login_required
+def home(request):
+    template_name = 'indexSigned.html'   
+    return render(request, template_name) 
+
+
+
+
+    
