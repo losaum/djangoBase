@@ -36,7 +36,7 @@ class CustomUserForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         first_name = self.data.get('first_name')
-        last_name = cleaned_data['last_name']
+        last_name = self.data.get('last_name')
 
         if first_name == last_name:
             raise ValidationError(_('Nome e Sobrenome não podem ser iguais.'))

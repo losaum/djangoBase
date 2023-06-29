@@ -10,9 +10,11 @@
         height="20"
         alt="BauruLogo"
         loading="lazy"
-        style="margin-top: -1px;"
+        style="margin-top: -1px;"        
       />
     </a>
+
+    
 
     <!-- Toggle button -->
     <button
@@ -31,11 +33,14 @@
     <div class="collapse navbar-collapse" id="navbarButtonsExample">
       <!-- Left links -->
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        
         {% if request.user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link">Olá {{ request.user.get_full_name }} </a>
-        </li>
+          <li class="nav-item">          
+            <a class="nav-link" style="color: {{ request.user.profile.getRGB_nivelPerfil }}">Olá {{ request.user.get_full_name }}</a>
+          </li>
         {% endif %}
+
+        
 
         <li class="nav-item">
           <a class="nav-link" href="#">Dashboard</a>
@@ -43,8 +48,23 @@
 
         {% if request.user.is_authenticated %} 
         <li class="nav-item">
-          <a class="nav-link" href="home">Home</a>
+          <a class="nav-link" href="{% url 'base_home' %}">Home</a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'base_homeOuro' %}">Home Ouro</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'base_homePrata' %}">Home Prata</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'base_homeBronze' %}">Home Bronze</a>
+        </li>
+
+       
+        
+
         {% endif %}
       </ul>
 
@@ -61,11 +81,16 @@
             Sign 
           </a>
          
-        {% else %}
+        {% else %}    
+               
           <a class="btn btn-dark" href="{% url 'logout' %}">            
             Logout
             <span class="fa fa-sign-out" aria-hidden="true"></span>
           </a>
+          {% if request.user.profile.hasPerfilPremio %}   
+            <i class="fa fa-trophy" aria-hidden="true" title="Usuário {{ request.user.profile.nivelPerfil}}" 
+               style="color: {{ request.user.profile.getRGB_nivelPerfil }}"></i>
+          {% endif %}
         {% endif %}
         
       </div>

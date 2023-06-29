@@ -105,6 +105,50 @@ class Profile(models.Model):
     cpf = models.CharField(max_length=11, null=True, blank=True)
     #avatar = models.ImageField(upload_to="customers/profiles/avatars/", null=True, blank=True)
 
+    class NivelPerfil(models.TextChoices):
+        PERFIL_DEFAULT = 'D', _('Padrão')
+        PERFIL_BRONZE = 'B', _('Bronze')
+        PERFIL_PRATA = 'P', _('Prata')
+        PERFIL_OURO = 'O', _('Ouro')
+
+    nivel_perfil = models.CharField(
+        max_length=1,
+        choices=NivelPerfil.choices,
+        default=NivelPerfil.PERFIL_DEFAULT,
+    )    
+
+    @property
+    def hasPerfilPremio(self):
+        if self.nivel_perfil != self.NivelPerfil.PERFIL_DEFAULT:
+            return True
+        return False
+    
+    @property
+    def nivelPerfil(self):
+        
+        if self.nivel_perfil == self.NivelPerfil.PERFIL_OURO:            
+            return "ouro"
+        elif self.nivel_perfil == self.NivelPerfil.PERFIL_PRATA:          
+            return "prata"
+        elif self.nivel_perfil == self.NivelPerfil.PERFIL_BRONZE:            
+            return "bronze"
+        else:            
+            return "padrão"    
+        
+
+    @property
+    def getRGB_nivelPerfil(self):
+        
+       
+        if self.nivel_perfil == self.NivelPerfil.PERFIL_OURO:            
+            return "rgb(214, 235, 20)"
+        elif self.nivel_perfil == self.NivelPerfil.PERFIL_PRATA:          
+            return "rgb(215, 215, 215)"
+        elif self.nivel_perfil == self.NivelPerfil.PERFIL_BRONZE:            
+            return "rgb(173, 138, 86)"
+        else:            
+            return "rgb(214, 214, 214)"       
+
     class Meta:
         ordering = ('user__first_name',)
         verbose_name = 'perfil'
