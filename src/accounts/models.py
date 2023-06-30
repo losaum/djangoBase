@@ -111,6 +111,20 @@ class Profile(models.Model):
         PERFIL_PRATA = 'P', _('Prata')
         PERFIL_OURO = 'O', _('Ouro')
 
+        
+    PERFIL_DEFAULT = 'D'
+    PERFIL_BRONZE = 'B' 
+    PERFIL_PRATA = 'P'
+    PERFIL_OURO = 'O'
+
+    PERFIL_CHOICES = (
+        (PERFIL_DEFAULT, 'Padrão'),
+        (PERFIL_BRONZE, 'Bronze'),
+        (PERFIL_PRATA, 'Prata'),
+        (PERFIL_OURO, 'Ouro'),
+    )    
+        
+
     nivel_perfil = models.CharField(
         max_length=1,
         choices=NivelPerfil.choices,

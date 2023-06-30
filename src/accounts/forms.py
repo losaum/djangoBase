@@ -6,6 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 
 from .models import User
+from .models import Profile
 
 
 class CustomUserForm(forms.ModelForm):
@@ -64,7 +65,10 @@ class CustomUserForm(forms.ModelForm):
         )
 
        
-
+    def __init__(self, *args, **kwargs): # Adiciona 
+        super().__init__(*args, **kwargs)  
+        for field_name, field in self.fields.items():   
+              field.widget.attrs['class'] = 'form-control' 
 
 class MyAuthenticationForm(AuthenticationForm):
 
@@ -166,3 +170,29 @@ class MyAuthenticationForm(AuthenticationForm):
         super().__init__(*args, **kwargs)  
         for field_name, field in self.fields.items():   
               field.widget.attrs['class'] = 'form-control'     
+
+
+########################
+class CustomUserProfileForm(CustomUserForm):              
+        
+    nivel_perfil = forms.CharField(max_length=1, 
+                                   widget=forms.Select(choices=Profile.PERFIL_CHOICES))
+
+    def clean_nivel_perfil(self):
+        nivel_perfil = self.cleaned_data['nivel_perfil']
+              
+        achou = False
+        for nivPerf in Profile.PERFIL_CHOICES:
+            if nivPerf[0] == nivel_perfil:                
+                return nivel_perfil
+
+        raise ValidationError(_('Nível de perfil não permitido.'))   
+
+        
+
+    def __init__(self, *args, **kwargs): # Adiciona 
+        super().__init__(*args, **kwargs)  
+        for field_name, field in self.fields.items():   
+              field.widget.attrs['class'] = 'form-control' 
+
+    

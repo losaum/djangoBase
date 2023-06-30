@@ -12,7 +12,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 
 from accounts.services import send_mail_to_user
 
-from .forms import CustomUserForm, MyAuthenticationForm
+from .forms import CustomUserForm,CustomUserProfileForm, MyAuthenticationForm
 from .models import User
 from .services import send_mail_to_user_reset_password
 #from .signals import user_login_password_failed
@@ -24,15 +24,24 @@ def signup(request):
     Cadastra Usuário.
     '''
     template_name = 'registration/registration_form.html'
-    form = CustomUserForm(request.POST or None)
+    #form = CustomUserForm(request.POST or None)
+    form = CustomUserProfileForm(request.POST or None)
+    
 
     if request.method == 'POST':
         if form.is_valid():
             user = form.save()
+            user.refresh_from_db()
+            user.profile.nivel_perfil = form.cleaned_data.get('nivel_perfil')
+            
             send_mail_to_user(request=request, user=user)
+            user.save()
+            
             return redirect('login')
+    
+    context = {'form': form}
 
-    return render(request, template_name)
+    return render(request, template_name,context)
 
 
 class MyPasswordResetConfirm(PasswordResetConfirmView):

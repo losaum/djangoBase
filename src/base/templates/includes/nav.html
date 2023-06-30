@@ -5,13 +5,14 @@
   <div class="container-fluid">
     <!-- Navbar brand -->
     <a class="navbar-brand me-2" href="#">
-      <img
+      <i class="fa fa-puzzle-piece fa-lg" aria-hidden="true"></i>
+      {% comment %} <img
         src="{% static '/img/imprensa-sandwich.png' %}"
         height="20"
         alt="BauruLogo"
         loading="lazy"
         style="margin-top: -1px;"        
-      />
+      /> {% endcomment %}
     </a>
 
     
@@ -77,7 +78,7 @@
             <span class="fa fa-sign-in" aria-hidden="true"></span>
             Login
           </a>                
-          <a class="btn btn-primary me-3" href="{% url 'login' %}"> 
+          <a class="btn btn-primary me-3" href="{% url 'signup' %}"> 
             Sign 
           </a>
          
