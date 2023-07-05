@@ -127,3 +127,47 @@ class Active(models.Model):
 
     class Meta:
         abstract = True
+
+
+class PerfilPremio(models.Model):
+            
+    PERFIL_DEFAULT = 'D'
+    PERFIL_BRONZE = 'B' 
+    PERFIL_PRATA = 'P'
+    PERFIL_OURO = 'O'
+
+    PERFIL_CHOICES = (
+        (PERFIL_DEFAULT, 'Padrão'),
+        (PERFIL_BRONZE, 'Bronze'),
+        (PERFIL_PRATA, 'Prata'),
+        (PERFIL_OURO, 'Ouro'),
+    )    
+        
+
+    nivel_perfil = models.CharField(
+        max_length=1,
+        choices=PERFIL_CHOICES,
+        default=PERFIL_DEFAULT,
+        blank=False, null=False
+    )    
+
+    @property
+    def hasPerfilPremio(self):
+        if self.nivel_perfil != self.PERFIL_DEFAULT:
+            return True
+        return False
+    
+    @property
+    def nivelPerfil(self):
+        
+        if self.nivel_perfil == self.PERFIL_OURO:            
+            return "ouro"
+        elif self.nivel_perfil == self.PERFIL_PRATA:          
+            return "prata"
+        elif self.nivel_perfil == self.PERFIL_BRONZE:            
+            return "bronze"
+        else:            
+            return "padrão"    
+
+    class Meta:
+        abstract = True   
