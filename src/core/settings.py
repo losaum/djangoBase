@@ -9,7 +9,7 @@ from django.contrib.messages import constants
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # adicionar essa tag para que nosso projeto encontre o .env
-load_dotenv(os.path.join(BASE_DIR, ".env"))
+load_dotenv(os.path.join(BASE_DIR, "_env"))  # L6 mudar "_env" para  ".env"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
@@ -22,9 +22,7 @@ DEBUG = os.getenv('DEBUG')
 
 ALLOWED_HOSTS = []
 
-
 AUTH_USER_MODEL = 'accounts.User'
-
 
 # Application definition
 
@@ -37,8 +35,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    'widget_tweaks',
-    
+    'widget_tweaks',    
 ]
 
 MIDDLEWARE = [
